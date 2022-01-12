@@ -5,6 +5,13 @@ database:
   - PostgreSql (Latest)
   - Mongo (Latest)
 
+Clone the project:
+
+```bash
+git clone https://github.com/ayocodingit/docker-compose-database.git
+cd docker-compose-database
+```
+
 how to run
 
 ```bash
