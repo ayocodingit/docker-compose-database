@@ -4,44 +4,50 @@ services:
   mongo:
     container_name: mongo
     image: mongo
-    environment: 
+    environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: mongo
-    ports: ["27017:27017"]
+    ports: [ "27017:27017" ]
     restart: always
-    volumes: 
+    volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
 
-
-  mysql: 
+  mysql:
     container_name: mysql
     image: mysql
     platform: linux/x86_64
     command: --default-authentication-plugin=mysql_native_password
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
-    ports: ["3306:3306"]
+    ports: [ "3306:3306" ]
     restart: always
-    volumes: 
+    volumes:
       - mysql:/var/lib/mysql
 
-
-  posgresql: 
+  posgresql:
     container_name: postgres
     image: postgres
-    environment: 
+    environment:
       POSTGRES_PASSWORD: postgres
-    ports: ["5432:5432"]
+    ports: [ "5432:5432" ]
     restart: always
-    volumes: 
+    volumes:
       - postgres:/var/lib/postgres/data
 
-volumes: 
-    mongodb:
-    mongodb_config:
-    mysql:
-    postgres: 
+  redis:
+    container_name: redis
+    image: redis
+    ports: [ "6379:6379" ]
+    restart: always
+    volumes:
+      - redis:/data
 
+volumes:
+  mongodb:
+  mongodb_config:
+  mysql:
+  postgres:
+  redis:

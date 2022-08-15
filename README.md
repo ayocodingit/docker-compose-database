@@ -4,6 +4,7 @@ database:
   - MySql (Latest)
   - PostgreSql (Latest)
   - Mongo (Latest)
+  - Redis (Latest)
 
 Clone the project:
 
