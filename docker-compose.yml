@@ -7,7 +7,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: mongo
-    ports: [ "27017:27017" ]
+    ports: 
+      - "27017:27017"
     restart: always
     volumes:
       - mongodb:/data/db
@@ -22,7 +23,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
-    ports: [ "3306:3306" ]
+    ports: 
+      - "3306:3306"
     restart: always
     volumes:
       - mysql:/var/lib/mysql
@@ -32,7 +34,8 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: postgres
-    ports: [ "5432:5432" ]
+    ports: 
+      - "5432:5432"
     restart: always
     volumes:
       - postgres:/var/lib/postgres/data
@@ -40,7 +43,8 @@ services:
   redis:
     container_name: redis
     image: redis
-    ports: [ "6379:6379" ]
+    ports: 
+      - "6379:6379"
     restart: always
     volumes:
       - redis:/data
@@ -48,7 +52,9 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq
-    ports: [ "5672:5672", "15672:15672" ]
+    ports: 
+      - "5672:5672" 
+      - "15672:15672"
     restart: always
     volumes:
       - rabbitmq:/var/lib/rabbitmq
