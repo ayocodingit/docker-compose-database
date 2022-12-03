@@ -5,6 +5,7 @@ database:
   - PostgreSql (Latest)
   - Mongo (Latest)
   - Redis (Latest)
+  - RabbitMQ (Latest)
 
 Clone the project:
 
