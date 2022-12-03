@@ -44,6 +44,15 @@ services:
     restart: always
     volumes:
       - redis:/data
+      
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq
+    ports: [ "5672:5672", "15672:15672" ]
+    restart: always
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+      - rabbitmq_log:/var/log/rabbitmq
 
 volumes:
   mongodb:
@@ -51,3 +60,5 @@ volumes:
   mysql:
   postgres:
   redis:
+  rabbitmq:
+  rabbitmq_log:
