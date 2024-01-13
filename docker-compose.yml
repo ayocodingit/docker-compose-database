@@ -82,6 +82,7 @@ services:
       - ./proxysql.cnf:/etc/proxysql.cnf
     ports:
       - "6032:6032"
+      - "6033:6033"
     restart: always
     depends_on:
       - mysql
