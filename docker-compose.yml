@@ -75,6 +75,17 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
 
+  proxysql:
+    container_name: proxysql
+    image: proxysql/proxysql:2.0.15
+    volumes:
+      - ./proxysql.cnf:/etc/proxysql.cnf
+    ports:
+      - "6032:6032"
+    restart: always
+    depends_on:
+      - mysql
+
 volumes:
   mongodb:
   mongodb_config:
