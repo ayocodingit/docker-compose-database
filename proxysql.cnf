@@ -10,7 +10,7 @@ mysql_users =
 
 mysql_variables=
 {
-    connect_retries_on_failure=0
+    connect_retries_on_failure=1
 }
 
 # Query Rules and Routing
