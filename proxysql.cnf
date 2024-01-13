@@ -8,6 +8,11 @@ mysql_users =
     { username="root", password="root", default_hostgroup=1 },
 )
 
+mysql_variables=
+{
+    connect_retries_on_failure=0
+}
+
 # Query Rules and Routing
 mysql_query_rules=(
     # { rule_id=1, active=1, match_pattern="^SELECT", destination_hostgroup=1 },
