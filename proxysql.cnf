@@ -1,11 +1,15 @@
 mysql_servers =
 (
-    { address="mysql", port=3306, hostgroup=1 },
+    { address="mariadb", port=3306, hostgroup=1, max_connections=700 },
+    { address="mariadb", port=3306, hostgroup=2, max_connections=150 },
+    { address="mariadb", port=3306, hostgroup=3, max_connections=150 },
 )
 
 mysql_users =
 (
     { username="root", password="root", default_hostgroup=1 },
+    { username="root", password="root", default_hostgroup=2 },
+    { username="root", password="root", default_hostgroup=3 },
 )
 
 mysql_variables=
@@ -40,14 +44,14 @@ mysql_variables=
 
 # Query Rules and Routing
 mysql_query_rules=(
-    # { rule_id=1, active=1, match_pattern="^SELECT", destination_hostgroup=1 },
-    # { rule_id=2, active=1, match_pattern="^UPDATE", destination_hostgroup=2 },
-    # Add more rules as needed
+    { rule_id=1, active=1, match_pattern="SELECT", destination_hostgroup=1 },
+    { rule_id=2, active=1, match_pattern="UPDATE", destination_hostgroup=2 },
+    { rule_id=3, active=1, match_pattern="INSERT", destination_hostgroup=3 },
 )
 
 # Connection Pooling Settings
 mysql-max_connections=1000 # Maximum number of connections ProxySQL will maintain.
-mysql-server_max_connections=500 # Maximum number of connections a backend MySQL server can accept.
+mysql-server_max_connections=1000 # Maximum number of connections a backend MySQL server can accept.
 mysql-connections_max_memory=10000000 # Maximum memory used by the connection pool. units of bytes 
 # In this example, connections_max_memory is set to 10,000,000 bytes, which is approximately 10 megabytes.
 
