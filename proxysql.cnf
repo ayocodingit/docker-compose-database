@@ -1,8 +1,9 @@
 mysql_servers =
 (
-    { address="mariadb", port=3306, hostgroup=1, max_connections=700 },
+    { address="mariadb", port=3306, hostgroup=1, max_connections=650 },
     { address="mariadb", port=3306, hostgroup=2, max_connections=150 },
     { address="mariadb", port=3306, hostgroup=3, max_connections=150 },
+    { address="mariadb", port=3306, hostgroup=4, max_connections=50 },
 )
 
 mysql_users =
@@ -10,6 +11,7 @@ mysql_users =
     { username="root", password="root", default_hostgroup=1 },
     { username="root", password="root", default_hostgroup=2 },
     { username="root", password="root", default_hostgroup=3 },
+    { username="root", password="root", default_hostgroup=4 },
 )
 
 mysql_variables=
@@ -47,6 +49,7 @@ mysql_query_rules=(
     { rule_id=1, active=1, match_pattern="SELECT", destination_hostgroup=1 },
     { rule_id=2, active=1, match_pattern="UPDATE", destination_hostgroup=2 },
     { rule_id=3, active=1, match_pattern="INSERT", destination_hostgroup=3 },
+    { rule_id=4, active=1, match_pattern="DELETE", destination_hostgroup=4 },
 )
 
 # Connection Pooling Settings
