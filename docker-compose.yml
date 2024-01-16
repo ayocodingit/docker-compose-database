@@ -48,7 +48,7 @@ services:
     restart: always
     volumes:
       - redis:/data
-      
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:management-alpine
