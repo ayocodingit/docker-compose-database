@@ -1,3 +1,10 @@
+admin_variables=
+{
+    admin_credentials="root:root"
+    mysql_ifaces="0.0.0.0:6032"
+}
+
+
 mysql_servers =
 (
     { address="mariadb", port=3306, hostgroup=1, max_connections=650 },
