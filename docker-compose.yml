@@ -85,7 +85,7 @@ services:
       - "6033:6033"
     restart: always
     depends_on:
-      - mysql
+      - mariadb
 
 volumes:
   mongodb:
