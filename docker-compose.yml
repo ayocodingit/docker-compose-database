@@ -87,6 +87,21 @@ services:
     depends_on:
       - mariadb
 
+  minio:
+    container_name: minio
+    image: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio:/data'
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio
+      - MINIO_DEFAULT_BUCKETS=minio
+    restart: always
+    platform: linux/x86_64
+
 volumes:
   mongodb:
   mongodb_config:
@@ -96,3 +111,4 @@ volumes:
   redis:
   rabbitmq:
   rabbitmq_log:
+  minio:
