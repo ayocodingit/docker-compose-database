@@ -89,7 +89,7 @@ services:
 
   minio:
     container_name: minio
-    image: minio
+    image: minio/minio
     ports:
       - '9000:9000'
       - '9001:9001'
@@ -97,10 +97,10 @@ services:
       - 'minio:/data'
     environment:
       - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=minio
-      - MINIO_DEFAULT_BUCKETS=minio
+      - MINIO_ROOT_PASSWORD=miniominio
     restart: always
     platform: linux/x86_64
+    command: server /data --console-address ":9001"
 
 volumes:
   mongodb:
