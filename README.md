@@ -17,5 +17,5 @@ cd docker-compose-database
 how to run
 
 ```bash
-docker-compose up --build -d
+docker-compose up -d
 ```
