@@ -7,15 +7,12 @@ services:
     ports: 
       - "27017:27017"
     restart: always
-    command: ["--replSet", "mongo", "--bind_ip_all"]
-    depends_on:
-      - mongo-replica-2
+    command: ["--replSet", "mongo", "--bind_ip_all", "--port", "27017"]
     volumes:
       - mongodb:/data/db
-      - mongodb_config:/data/configdb
     healthcheck:
       test: |
-        mongosh --quiet --eval "try { rs.status() } catch (err) { rs.initiate({_id: 'mongo', members: [{_id: 0, host: 'localhost:27017'}, {_id: 1, host: 'localhost:27017'} ]}) }"
+        mongosh --quiet --eval "try { rs.status() } catch (err) { rs.initiate({_id: 'mongo', members: [{_id: 0, host: 'localhost:27017', priority:1}, {_id: 1, host: 'localhost:27018', priority:0.5} ]}) }"
       interval: 10s
       timeout: 30s
       retries: 5
@@ -25,11 +22,10 @@ services:
     container_name: mongo-replica-2
     restart: always
     ports:
-      - 27018:27017
+      - 27018:27018
     volumes:
       - mongodb_replica_2:/data/db
-      - mongoconfig_replica_2:/data/configdb
-    command: ["--replSet", "mongo", "--bind_ip_all"]
+    command: ["--replSet", "mongo", "--bind_ip_all", "--port", "27018"]
 
   mysql:
     container_name: mysql
@@ -121,9 +117,7 @@ services:
 
 volumes:
   mongodb:
-  mongodb_config:
   mongodb_replica_2:
-  mongoconfig_replica_2:
   mysql:
   mariadb:
   postgres:
