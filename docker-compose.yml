@@ -4,9 +4,6 @@ services:
   mongo:
     container_name: mongo
     image: mongo:5
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: mongo
     ports: 
       - "27017:27017"
     restart: always
@@ -16,6 +13,12 @@ services:
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
+    healthcheck:
+      test: |
+        mongosh --quiet --eval "try { rs.status() } catch (err) { rs.initiate({_id: 'mongo', members: [{_id: 0, host: 'localhost:27017'}, {_id: 1, host: 'localhost:27017'} ]}) }"
+      interval: 10s
+      timeout: 30s
+      retries: 5
 
   mongo-replica-2:
     image: mongo:5
