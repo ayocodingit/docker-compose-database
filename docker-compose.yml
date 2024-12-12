@@ -3,16 +3,30 @@ version: '3'
 services:
   mongo:
     container_name: mongo
-    image: mongo
+    image: mongo:5
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: mongo
     ports: 
       - "27017:27017"
     restart: always
+    command: ["--replSet", "mongo", "--bind_ip_all"]
+    depends_on:
+      - mongo-replica-2
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
+
+  mongo-replica-2:
+    image: mongo:5
+    container_name: mongo-replica-2
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_replica_2:/data/db
+      - mongoconfig_replica_2:/data/configdb
+    command: ["--replSet", "mongo", "--bind_ip_all"]
 
   mysql:
     container_name: mysql
@@ -105,6 +119,8 @@ services:
 volumes:
   mongodb:
   mongodb_config:
+  mongodb_replica_2:
+  mongoconfig_replica_2:
   mysql:
   mariadb:
   postgres:
