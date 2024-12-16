@@ -12,20 +12,10 @@ services:
       - mongodb:/data/db
     healthcheck:
       test: |
-        mongosh --quiet --eval "try { rs.status() } catch (err) { rs.initiate({_id: 'mongo', members: [{_id: 0, host: 'localhost:27017', priority:1}, {_id: 1, host: 'localhost:27018', priority:0.5} ]}) }"
+        mongosh --quiet --eval "try { rs.status() } catch (err) { rs.initiate({_id: 'mongo', members: [{_id: 0, host: 'localhost:27017', priority:1}) }"
       interval: 10s
       timeout: 30s
       retries: 5
-
-  mongo-replica-2:
-    image: mongo:5
-    container_name: mongo-replica-2
-    restart: always
-    ports:
-      - 27018:27018
-    volumes:
-      - mongodb_replica_2:/data/db
-    command: ["--replSet", "mongo", "--bind_ip_all", "--port", "27018"]
 
   mysql:
     container_name: mysql
