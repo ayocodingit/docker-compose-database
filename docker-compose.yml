@@ -34,7 +34,7 @@ services:
 
   posgresql:
     container_name: postgres
-    image: postgres:14
+    image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
