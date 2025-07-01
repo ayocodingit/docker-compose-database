@@ -106,6 +106,40 @@ services:
     platform: linux/x86_64
     command: server /data --console-address ":9001"
 
+  nsqlookupd:
+    container_name: nsqlookupd
+    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+    command: /nsqlookupd --http-address=0.0.0.0:4160 --tcp-address=0.0.0.0:4161 # Explicitly bind to all interfaces
+    ports:
+      - "4160:4160"
+      - "4161:4161"
+    restart: always
+    volumes:
+      - nsqlookupd_data:/data
+
+  nsqd:
+    container_name: nsqd
+    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4161 --data-path=/data --http-address=0.0.0.0:4151 --tcp-address=0.0.0.0:4150 # Explicitly bind
+    ports:
+      - "4150:4150"
+      - "4151:4151"
+    restart: always
+    volumes:
+      - nsqd_data:/data
+    depends_on:
+      - nsqlookupd
+
+  nsqadmin:
+    container_name: nsqadmin
+    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+    command: /nsqadmin --lookupd-http-address=nsqlookupd:4160
+    ports:
+      - "4171:4171"
+    restart: always
+    depends_on:
+      - nsqlookupd
+
 volumes:
   mongodb:
   mongodb_replica_2:
@@ -116,3 +150,5 @@ volumes:
   rabbitmq:
   rabbitmq_log:
   minio:
+  nsqlookupd_data:
+  nsqd_data:
