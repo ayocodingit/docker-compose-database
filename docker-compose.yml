@@ -19,9 +19,9 @@ services:
 
   mysql:
     container_name: mysql
-    image: mysql
+    image: mysql:8.0.27
     platform: linux/x86_64
-    command: --default-authentication-plugin=mysql_native_password
+    # command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USERNAME: root
@@ -34,10 +34,11 @@ services:
 
   posgresql:
     container_name: postgres
-    image: postgres
+    image: postgres:14
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports: 
       - "5432:5432"
     restart: always
@@ -53,16 +54,16 @@ services:
     volumes:
       - redis:/data
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:management-alpine
-    ports: 
-      - "5672:5672" 
-      - "15672:15672"
-    restart: always
-    volumes:
-      - rabbitmq:/var/lib/rabbitmq
-      - rabbitmq_log:/var/log/rabbitmq
+  # rabbitmq:
+  #   container_name: rabbitmq
+  #   image: rabbitmq:management-alpine
+  #   ports: 
+  #     - "5672:5672" 
+  #     - "15672:15672"
+  #   restart: always
+  #   volumes:
+  #     - rabbitmq:/var/lib/rabbitmq
+  #     - rabbitmq_log:/var/log/rabbitmq
 
   mariadb:
     container_name: mariadb
@@ -79,66 +80,66 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
 
-  proxysql:
-    container_name: proxysql
-    image: proxysql/proxysql:2.0.15
-    volumes:
-      - ./proxysql.cnf:/etc/proxysql.cnf
-    ports:
-      - "6032:6032"
-      - "6033:6033"
-    restart: always
-    depends_on:
-      - mariadb
+  # proxysql:
+  #   container_name: proxysql
+  #   image: proxysql/proxysql:2.0.15
+  #   volumes:
+  #     - ./proxysql.cnf:/etc/proxysql.cnf
+  #   ports:
+  #     - "6032:6032"
+  #     - "6033:6033"
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
 
-  minio:
-    container_name: minio
-    image: minio/minio
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - 'minio:/data'
-    environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=miniominio
-    restart: always
-    platform: linux/x86_64
-    command: server /data --console-address ":9001"
+  # minio:
+  #   container_name: minio
+  #   image: minio/minio
+  #   ports:
+  #     - '9000:9000'
+  #     - '9001:9001'
+  #   volumes:
+  #     - 'minio:/data'
+  #   environment:
+  #     - MINIO_ROOT_USER=minio
+  #     - MINIO_ROOT_PASSWORD=miniominio
+  #   restart: always
+  #   platform: linux/x86_64
+  #   command: server /data --console-address ":9001"
 
-  nsqlookupd:
-    container_name: nsqlookupd
-    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
-    command: /nsqlookupd --http-address=0.0.0.0:4160 --tcp-address=0.0.0.0:4161 # Explicitly bind to all interfaces
-    ports:
-      - "4160:4160"
-      - "4161:4161"
-    restart: always
-    volumes:
-      - nsqlookupd_data:/data
+  # nsqlookupd:
+  #   container_name: nsqlookupd
+  #   image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+  #   command: /nsqlookupd --http-address=0.0.0.0:4160 --tcp-address=0.0.0.0:4161 # Explicitly bind to all interfaces
+  #   ports:
+  #     - "4160:4160"
+  #     - "4161:4161"
+  #   restart: always
+  #   volumes:
+  #     - nsqlookupd_data:/data
 
-  nsqd:
-    container_name: nsqd
-    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4161 --data-path=/data --http-address=0.0.0.0:4151 --tcp-address=0.0.0.0:4150 # Explicitly bind
-    ports:
-      - "4150:4150"
-      - "4151:4151"
-    restart: always
-    volumes:
-      - nsqd_data:/data
-    depends_on:
-      - nsqlookupd
+  # nsqd:
+  #   container_name: nsqd
+  #   image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+  #   command: /nsqd --lookupd-tcp-address=nsqlookupd:4161 --data-path=/data --http-address=0.0.0.0:4151 --tcp-address=0.0.0.0:4150 # Explicitly bind
+  #   ports:
+  #     - "4150:4150"
+  #     - "4151:4151"
+  #   restart: always
+  #   volumes:
+  #     - nsqd_data:/data
+  #   depends_on:
+  #     - nsqlookupd
 
-  nsqadmin:
-    container_name: nsqadmin
-    image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
-    command: /nsqadmin --lookupd-http-address=nsqlookupd:4160
-    ports:
-      - "4171:4171"
-    restart: always
-    depends_on:
-      - nsqlookupd
+  # nsqadmin:
+  #   container_name: nsqadmin
+  #   image: nsqio/nsq:v1.2.0 # Menggunakan versi 1.2.0
+  #   command: /nsqadmin --lookupd-http-address=nsqlookupd:4160
+  #   ports:
+  #     - "4171:4171"
+  #   restart: always
+  #   depends_on:
+  #     - nsqlookupd
 
 volumes:
   mongodb:
@@ -146,8 +147,8 @@ volumes:
   mariadb:
   postgres:
   redis:
-  rabbitmq:
-  rabbitmq_log:
-  minio:
-  nsqlookupd_data:
-  nsqd_data:
+  # rabbitmq:
+  # rabbitmq_log:
+  # minio:
+  # nsqlookupd_data:
+  # nsqd_data:
