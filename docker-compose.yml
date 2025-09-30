@@ -92,20 +92,39 @@ services:
   #   depends_on:
   #     - mariadb
 
-  # minio:
-  #   container_name: minio
-  #   image: minio/minio
-  #   ports:
-  #     - '9000:9000'
-  #     - '9001:9001'
-  #   volumes:
-  #     - 'minio:/data'
-  #   environment:
-  #     - MINIO_ROOT_USER=minio
-  #     - MINIO_ROOT_PASSWORD=miniominio
-  #   restart: always
-  #   platform: linux/x86_64
-  #   command: server /data --console-address ":9001"
+  minio:
+    container_name: minio
+    image: minio/minio:RELEASE.2024-10-13T13-34-11Z
+    ports:
+      - '9002:9000'
+      - '9001:9001'
+    volumes:
+      - 'minio2:/data'
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=miniominio
+    restart: always
+    platform: linux/x86_64
+    command: server /data --console-address ":9001"
+
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    # networks:
+    #   - nginx_n8n
+    volumes:
+      - n8n:/home/node/.n8n
+    environment:
+     - N8N_PROTOCOL=https
+     - N8N_HOST=n8n.saga-gateway.id
+     - N8N_PORT=5678
+     - WEBHOOK_URL=https://n8n.saga-gateway.id/
+     - DB_TYPE=sqlite
+     - DB_SQLITE_POOL_SIZE=2
+     - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+     - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    restart: unless-stopped
 
   # nsqlookupd:
   #   container_name: nsqlookupd
@@ -141,12 +160,23 @@ services:
   #   depends_on:
   #     - nsqlookupd
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9000:9000
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
 volumes:
   mongodb:
   mysql:
   mariadb:
   postgres:
   redis:
+  n8n:
+  portainer:
   # rabbitmq:
   # rabbitmq_log:
   # minio:
