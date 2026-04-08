@@ -49,6 +49,7 @@ services:
     platform: linux/amd64
     build:
       context: ./postgres/full
+    entrypoint: ["/usr/local/bin/postgres_full_entrypoint.sh"]
     command: ["postgres", "-c", "shared_preload_libraries=anon"]
     environment:
       POSTGRES_USER: postgres

@@ -1,5 +1,8 @@
 FROM --platform=linux/amd64 postgis/postgis:17-3.5
 
+COPY postgres_full_entrypoint.sh /usr/local/bin/postgres_full_entrypoint.sh
+RUN chmod +x /usr/local/bin/postgres_full_entrypoint.sh
+
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
