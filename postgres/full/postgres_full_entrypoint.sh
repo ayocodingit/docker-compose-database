@@ -10,8 +10,8 @@ handle_term() {
 }
 trap handle_term TERM INT
 
-# Run the original entrypoint (initdb + start postgres) in background.
-/docker-entrypoint.sh "${args[@]}" &
+# Run the image entrypoint (initdb + start postgres) in background.
+/usr/local/bin/docker-entrypoint.sh "${args[@]}" &
 postgres_pid="$!"
 
 # Wait until postgres accepts connections, then ensure extensions exist.
