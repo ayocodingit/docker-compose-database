@@ -45,7 +45,11 @@ services:
 
   postgres_full:
     container_name: postgres_full
-    image: postgres:17
+    image: postgres_full:17
+    platform: linux/amd64
+    build:
+      context: ./postgres/full
+    command: ["postgres", "-c", "shared_preload_libraries=anon"]
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
